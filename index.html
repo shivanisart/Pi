@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pi Digits Colored</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      gap: 5px;
+      max-width: 350px;
+    }
+    .digit {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Colored Digits of π</h2>
+  <div class="grid" id="piGrid"></div>
+
+  <script>
+    // First 100 digits of π (excluding the "3.")
+    const piDigits = "14159265358979323846264338327950288419716939937510" +
+                     "58209749445923078164062862089986280348253421170679";
+
+    const grid = document.getElementById("piGrid");
+
+    for (let char of piDigits) {
+      const digit = parseInt(char);
+
+      const red = Math.round(255 * (9 - digit) / 9);
+      const blue = Math.round(255 * digit / 9);
+
+      const color = `rgb(${red}, 0, ${blue})`;
+
+      const cell = document.createElement("div");
+      cell.className = "digit";
+      cell.style.backgroundColor = color;
+      cell.textContent = digit;
+
+      grid.appendChild(cell);
+    }
+  </script>
+</body>
+</html>
