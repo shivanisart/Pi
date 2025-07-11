@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>10,000 Colored Digits of Pi</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(100, 10px); /* 100 digits per row */
+      gap: 1px;
+    }
+    .digit {
+      width: 10px;
+      height: 10px;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      border-radius: 1px;
+    }
+  </style>
+</head>
+<body>
+  <h2>10,000 Colored Digits of π</h2>
+  <div class="grid" id="piGrid">Loading...</div>
+
+  <script>
+    fetch('10000pi.txt')
+      .then(response => response.text())
+      .then(text => {
+        const digits = text.replace(/\D/g, '').slice(0, 10000); // Keep only digits
+        const grid = document.getElementById('piGrid');
+        grid.innerHTML = ''; // Clear "Loading..."
+
+        for (let char of digits) {
+          const digit = parseInt(char);
+          const red = Math.round(255 * (9 - digit) / 9);
+          const blue = Math.round(255 * digit / 9);
+          const color = `rgb(${red}, 0, ${blue})`;
+
+          const cell = document.createElement('div');
+          cell.className = 'digit';
+          cell.style.backgroundColor = color;
+          cell.textContent = digit;
+
+          grid.appendChild(cell);
+        }
+      })
+      .catch(error => {
+        document.getElementById('piGrid').innerHTML = 'Error loading file.';
+        console.error('Error loading pi digits:', error);
+      });
+  </script>
+</body>
+</html>
