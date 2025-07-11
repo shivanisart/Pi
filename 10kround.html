@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>10,000 Pi Digits - Radial Spiral</title>
+  <style>
+    body {
+      background: #000;
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+<canvas id="piCanvas" width="1200" height="1200"></canvas>
+
+<script>
+  const canvas = document.getElementById('piCanvas');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+
+  fetch('10000pi.txt')
+    .then(res => res.text())
+    .then(text => {
+      const digits = text.replace(/\D/g, '').slice(0, 10000);
+      drawSpiral(digits);
+    });
+
+  function drawSpiral(digits) {
+    const spacing = 0.75; // controls distance between loops
+    const radiusStep = 0.15; // controls how tightly the spiral curls
+    const size = 3; // digit dot radius
+    let angle = 0;
+
+    for (let i = 0; i < digits.length; i++) {
+      const digit = parseInt(digits[i]);
+      const red = Math.round(255 * (9 - digit) / 9);
+      const blue = Math.round(255 * digit / 9);
+      const color = `rgb(${red}, 0, ${blue})`;
+
+      // Spiral math
+      const r = radiusStep * i;
+      angle = spacing * i * (Math.PI / 180); // convert to radians
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.fillStyle = color;
+      ctx.arc(x, y, size, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+</script>
+</body>
+</html>o
